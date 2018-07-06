@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,21 +12,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.css" />
     <script src="graph.js"></script>
+    <!--<script src="Percentagetest.js"></script>-->
+
 </head>
+
 <body>
-    
+
     <a href="javascript:dc.filterAll(); dc.renderAll();"><strong>Reset All</strong></a>
-    
+<br>
+    <div id="percentage-success">Successful Projects_</div>
+    <div id="percentage-fail">Failed Projects_</div>
+    <div id="percentage-suspended">Suspended Projects_</div>
+    <div id="percentage-live">Live Projects_</div>
+
+    <br>
+
+
     <div id="status_filter">Status filter <br></div>
-    
-    <div id="country_filter">Country Filter <br></div>
-    
+
+    <div id="country_filter">Investor Country Filter <br></div>
+
     <div id="status-balance">No. of projects by status<br></div>
-    
-    <div id="projects-country">No. of projects by country<br></div>
-    
-    
-    
-    
+
+    <div id="project-category">Project Categories<br></div>
+
+
+
+
 </body>
+
 </html>

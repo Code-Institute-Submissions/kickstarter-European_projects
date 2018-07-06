@@ -1,11 +1,16 @@
 queue()
-    .defer(d3.csv, "ks-projects-Europe_red.csv")
+    .defer(d3.csv, "ks-projects-Europe_final.csv")
     .await(makeGraph);
 
 function makeGraph(error, transactionsData) {
     let ndx = crossfilter(transactionsData);
 
-    projectsByCountry(ndx);
+    projectStatusPercentage(ndx, "successful", "#percentage-success");
+    projectStatusPercentage(ndx, "failed", "#percentage-fail");
+    projectStatusPercentage(ndx, "suspended", "#percentage-suspended");
+    projectStatusPercentage(ndx, "live", "#percentage-live");
+
+    projectCategory(ndx);
     country_selector(ndx)
     status_selector(ndx);
     status_balance(ndx);
@@ -15,16 +20,14 @@ function makeGraph(error, transactionsData) {
 
 }
 
-function projectsByCountry(ndx) {
-    let countryDim = ndx.dimension(dc.pluck("country_code"));
-    let group = countryDim.group();
+function status_selector(ndx) {
+    let statusDim = ndx.dimension(dc.pluck("status"));
+    let group = statusDim.group();
 
-    dc.pieChart("#projects-country")
-        .height(300)
-        .radius(100)
-        .innerRadius(15)
-        .dimension(countryDim)
+    dc.selectMenu("#status_filter")
+        .dimension(statusDim)
         .group(group);
+
 }
 
 function country_selector(ndx) {
@@ -36,14 +39,44 @@ function country_selector(ndx) {
         .group(group);
 }
 
-function status_selector(ndx) {
-    let statusDim = ndx.dimension(dc.pluck("status"));
-    let group = statusDim.group();
+function projectStatusPercentage(ndx, state, element) {
+    var percentageStatus = ndx.groupAll().reduce(
+        function(p, v) {
+            if (v.region === "Europe") {                
+                p.count++;
+                if (v.status === state) {
+               
+                    p.projects++;
+                }
+            }
+            return p;
+        },
+        function(p, v) {
+                if (v.region === "Europe") {
+                p.count--;
+                if (v.status === state) {
 
-    dc.selectMenu("#status_filter")
-        .dimension(statusDim)
-        .group(group);
+                    p.projects--;
+                }
+            }
+            return p;
+        },
+        function() {
+            return { count: 0, projects: 0 };
+        },
+    );
 
+    dc.numberDisplay(element)
+        .formatNumber(d3.format(".2%"))
+        .valueAccessor(function(d) {
+            if (d.count == 0) {
+                return 0;
+            }
+            else {
+                return ( d.projects / d.count);
+            }
+        })
+        .group(percentageStatus)
 }
 
 function status_balance(ndx) {
@@ -62,4 +95,16 @@ function status_balance(ndx) {
         .elasticY(true)
         .xAxisLabel("Status")
         .yAxis().ticks(5);
+}
+
+function projectCategory(ndx) {
+    let categoryDim = ndx.dimension(dc.pluck("main_category"));
+    let group = categoryDim.group();
+
+    dc.pieChart("#project-category")
+        .height(300)
+        .radius(100)
+        .innerRadius(15)
+        .dimension(categoryDim)
+        .group(group);
 }
