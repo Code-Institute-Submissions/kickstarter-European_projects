@@ -1,5 +1,5 @@
 queue()
-    .defer(d3.csv, "ks-projects-Europe_final.csv")
+    .defer(d3.csv, "data/ks-projects-Europe_final.csv")
     .await(makeGraph);
 
 function makeGraph(error, transactionsData) {
@@ -103,8 +103,8 @@ function projectCategory(ndx) {
 
     dc.pieChart("#project-category")
         .height(300)
-        .radius(100)
-        .innerRadius(15)
+        .radius(150)
+        .innerRadius(35)
         .dimension(categoryDim)
         .group(group);
 }

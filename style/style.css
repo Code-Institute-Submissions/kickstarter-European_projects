@@ -1,0 +1,8 @@
+body {
+    background-image: url("../background-blank-empty.jpg");
+    /*background-color: lemonchiffon;*/
+}
+
+.number-box{
+    padding: 30px;
+}
