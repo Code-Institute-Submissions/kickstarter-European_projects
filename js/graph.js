@@ -15,7 +15,7 @@ function makeGraph(error, transactionsData) {
     status_selector(ndx);
     status_balance(ndx);
     fundingTimeCorrelation(ndx);
-    fund_country(ndx)
+    goalfund_country(ndx);
 
 
     dc.renderAll();
@@ -112,53 +112,43 @@ function projectCategory(ndx) {
 }
 
 function fundingTimeCorrelation(ndx) {
-    // var genderColors = d3.scale.ordinal()
-    //     .domain(["Female", "Male"])
-    //     .range(["pink", "blue"]);
 
-    let timeSpanDim = ndx.dimension(dc.pluck("backers"));
-    let placeDim = ndx.dimension(function(d) {
+    let backersDim = ndx.dimension(dc.pluck("backers"));
+    let pledgedDim = ndx.dimension(function(d) {
         return [d.backers, d.usd_pledged, ];
     });
-    let fundTimeGroup = placeDim.group().reduceSum(dc.pluck("backers"));
+    let pledgedGroup = pledgedDim.group().reduceSum(dc.pluck("backers"));
 
-    let minDays = timeSpanDim.bottom(1)[0].backers;
-    let maxDays = timeSpanDim.top(1)[0].backers;
+    let minBack = backersDim.bottom(1)[0].backers;
+    let maxBack = backersDim.top(1)[0].backers;
 
     dc.scatterPlot("#fundVTimeCorrel")
         .width(1000)
         .height(800)
-        .x(d3.scale.linear().domain([minDays, maxDays]))
+        .x(d3.scale.linear().domain([minBack, maxBack]))
         .brushOn(false)
-        .symbolSize(4)
-        .clipPadding(10)
-        .xAxisLabel("Funding Raised")
+        .symbolSize(2)
+        .clipPadding(5)
+        .xAxisLabel("No. of Backers")
         .title(function(d) {
             return d.key[2] + " fund " + d.key[1];
         })
-        // .colorAccessor(function(d) {
-        //     return d.key[3];
-        // })
-        // .colors(genderColors)
-        .dimension(placeDim)
-        .group(fundTimeGroup)
+        
+        .dimension(pledgedDim)
+        .group(pledgedGroup)
         .margins({ top: 10, right: 50, bottom: 75, left: 75 });
 }
 
-function fund_country(ndx) {
-    let countryDim = ndx.dimension(dc.pluck("country_code"));
-    let group = countryDim.group().reduceSum(dc.pluck("usd_pledged"));
+function goalfund_country(ndx) {
+    let countryDim = ndx.dimension(dc.pluck('country_code'));
+    let group = countryDim.group().reduceSum(dc.pluck('goal'));
 
-    dc.barChart("#country-fund")
-        .width(400)
-        .height(300)
-        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+    let chart = dc.rowChart("#country-goal");
+    chart
+        .width(900)
+        .height(500)
         .dimension(countryDim)
         .group(group)
-        .transitionDuration(500)
-        .x(d3.scale.ordinal())
-        .xUnits(dc.units.ordinal)
-        .elasticY(true)
-        .xAxisLabel("Status")
-        .yAxis().ticks(5);
+        .elasticX(true)
+        .xAxis().ticks(6);
 }
