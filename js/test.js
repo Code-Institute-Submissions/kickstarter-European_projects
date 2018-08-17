@@ -1,102 +1,96 @@
+let numberFormat = d3.format(".2f");
+
 queue()
     .defer(d3.csv, "data/ks-projects-Europe_final.csv")
-    .await(makeGraph);
-
-function makeGraph(error, transactionsData) {
-    let ndx = crossfilter(transactionsData);
-
+    .await(makeGraphs);
     
+function makeGraphs(error, transactionsJson) {
+    let ndx = crossfilter(transactionsJson);
+    
+    let countryDim = ndx.dimension(function(d){
+        return d.country;
+    });
+    
+    let statsByCountry = countryDim.group().reduce(
+        function (p, v) {
+            p.count += 1;
+            p.usd_pledged += +v.usd_pledged;
+            p.usd_goal += +v.usd_goal;
+            p.days_elapsed += +v.days_elapsed;
+            
+            p.avg_usd_pledged = p.usd_pledged / p.count;
+            p.avg_goal = p.usd_goal / p.count;
+            p.avg_days_elapsed = p.days_elapsed / p.count;
+            
+            return p;
+        },
+        function (p, v) {
+            p.count -= 1;
+            
+            if (p.count == 0) {
+                p.usd_pledged = 0;
+                p.usd_goal = 0;
+                p.days_elapsed = 0;
 
-    country_selector(ndx);
-    // fundingTimeCorrelation(ndx);
-    goalfund_country(ndx);
-    compositePledgedCountry(ndx);
+                p.avg_usd_pledged = 0;
+                p.avg_usd_goal = 0;
+                p.avg_days_elapsed = 0;
+            } else {
+                p.usd_pledged -= +v.usd_pledged;
+                p.usd_goal -= +v.goal;
+                p.days_elapsed -= +v.days_elapsed;
 
-    dc.renderAll();
-
-}
-
-function country_selector(ndx) {
-    let countryDim = ndx.dimension(dc.pluck("country"));
-    let group = countryDim.group();
-
-    dc.selectMenu("#country_filter")
+                p.avg_usd_pledged = p.usd_pledged / p.count;
+                p.avg_usd_goal = p.goal / p.count;
+                p.avg_days_elapsed = p.days_elapsed / p.count;
+            }
+            return p;
+        },
+        function () {
+            return {count: 0, usd_pledged: 0, avg_usd_pledged: 0, usd_goal: 0, avg_usd_goal: 0, days_elapsed: 0, avg_days_elapsed: 0}
+        }
+    );
+    
+    let pledged_over_time_country_chart = dc.bubbleChart("#pledged_over_time_country_chart");
+    pledged_over_time_country_chart.width(990)
+        .height(400)
+        .margins({top: 10, right: 50, bottom: 30, left: 60})
         .dimension(countryDim)
-        .group(group);
-}
-
-
-function goalfund_country(ndx) {
-    let countryDim = ndx.dimension(dc.pluck('country_code'));
-    let group = countryDim.group().reduceSum(dc.pluck('goal'));
-
-    let chart = dc.rowChart("#country-goal");
-    chart
-        .width(900)
-        .height(500)
-        .dimension(countryDim)
-        .group(group)
+        .group(statsByCountry)
+        .colors(d3.scale.category20())
+        .keyAccessor(function (p) {
+            return p.value.avg_usd_pledged;
+        })
+        .valueAccessor(function (p) {
+            return p.value.avg_goal;
+        })
+        .radiusValueAccessor(function (p) {
+            return p.value.avg_usd_pledged;
+        })
+        .x(d3.scale.linear().domain([0, 50000]))
+        .r(d3.scale.linear().domain([0, 50000]))
+        .minRadiusWithLabel(15)
+        .elasticY(true)
+        .yAxisPadding(50000)
         .elasticX(true)
-        .xAxis().ticks(6);
-}
-
-
-function compositePledgedCountry(ndx) {
-
-    let dateDim = ndx.dimension(function(d) {
-        return d.deadline;
-    });
-    let minDate = dateDim.bottom(1)[0].deadline;
-    let maxDate = dateDim.top(1)[0].deadline;
-
-    let fundsUK = dateDim.group().reduceSum(function(d) {
-        if (d.name === "United Kingdom") {
-            return +d.usd_pledged;
-        }
-        else {
-            return 0;
-        }
-    });
-
-    // let bobSpendByMonth = dateDim.group().reduceSum(function(d) {
-    //     if (d.name === "Bob") {
-    //         return +d.spend;
-    //     }
-    //     else {
-    //         return 0;
-    //     }
-    // });
-
-    // let aliceSpendByMonth = dateDim.group().reduceSum(function(d) {
-    //     if (d.name === "Alice") {
-    //         return +d.spend;
-    //     }
-    //     else {
-    //         return 0;
-    //     }
-    // });
-    let compositeChart = dc.compositeChart('#composite-chart');
-    compositeChart
-        .width(990)
-        .height(200)
-        .dimension(dateDim)
-        .x(d3.time.scale().domain([minDate, maxDate]))
-        .yAxisLabel("The Y Axis")
-        .legend(dc.legend().x(80).y(20).itemHeight(13).gap(5))
+        .xAxisPadding(2000)
+        .maxBubbleRelativeSize(0.07)
         .renderHorizontalGridLines(true)
-        .compose([
-            dc.barChart(compositeChart)
-            .colors('green')
-            .group(fundsUK, 'Tom Smith'),
-            // dc.lineChart(compositeChart)
-            // .renderArea(true)
-            // // .colors('red')
-            // .group(bobSpendByMonth, 'Bob Sponge'),
-            // dc.lineChart(compositeChart)
-            // // .colors('blue')
-            // .group(aliceSpendByMonth, 'Alice Wonderland')
-        ])
-        .brushOn(false)
-        .render();
-
-}
+        .renderVerticalGridLines(true)
+        .renderLabel(true)
+        .renderTitle(true)
+        .title(function (p) {
+            return p.key
+                + "\n"
+                + "Pledged Amount : " + numberFormat(p.value.avg_usd_pledged) + "\n"
+                + "Goal Amount: " + numberFormat(p.value.avg_usd_goal);
+                + "Days Elapsed: " + numberFormat(p.value.avg_days_elapsed);
+        });
+    pledged_over_time_country_chart.yAxis().tickFormat(function (s) {
+        return s;
+    });
+    pledged_over_time_country_chart.xAxis().tickFormat(function (s) {
+        return s;
+    });
+    dc.renderAll();
+};
