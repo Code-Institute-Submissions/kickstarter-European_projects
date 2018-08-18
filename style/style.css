@@ -1,6 +1,6 @@
-body {
-    background-image: url("../background-blank-empty.jpg");
-    /*background-color: lemonchiffon;*/
+.title{
+    background-color: #00447c;
+    color: #fff;
 }
 
 .number-box{

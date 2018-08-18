@@ -17,7 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.css" />
     <script src="js/graph.js"></script>
-    
+
 
     <title>Kicksterter European Projects</title>
 </head>
@@ -35,17 +35,9 @@
     <section>
         <div class="container">
             <div class="row">
-                <a class="btn btn-info rst-btn" href="javascript:dc.filterAll(); dc.renderAll();"><strong>Reset All</strong></a>
-            </div>
-            <div class="row">
-                <div class="col-sm-5">
-                    <div id="country_filter">
-                        <h2>Regional Filter</h2>
-                    </div>
-                </div>
-                <div class="col-sm-7">
-                    <div class="row">
-                        <h2>European Projects Success Rate</h2>
+                <div class="col-sm-6">
+                    <div class="row title">
+                        <h4>European Projects Success Rate</h4>
                     </div>
                     <div class="row">
                         <i class="fas fa-thumbs-up"></i> <span class="number-box" id="percentage-success"></span>
@@ -54,6 +46,10 @@
                         <i class="fas fa-sync-alt"></i> <span class="number-box" id="percentage-live"></span>
                     </div>
                 </div>
+                <div class="col-sm-3 col-sm-offset-2" id="region_selector">
+                    <h4>Regional Filter</h4>
+                </div>
+                <a class="col-sm-1 btn btn-default rst-btn " href="javascript:dc.filterAll(); dc.renderAll();"><strong>Reset All</strong></a>
             </div>
         </div>
     </section>
@@ -62,11 +58,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3>Number of Projects by Status</h3>
+                    <div class="title">
+                        <h4>Number of Projects by Status</h4>
+                    </div>
                     <div id="status-balance"></div>
                 </div>
                 <div class="col-sm-6">
-                    <h3>No. of Projects per Category</h3>
+                    <div class="title">
+                        <h4>No. of Projects per Category</h4>
+                    </div>
                     <div id="project-category"></div>
                 </div>
             </div>
@@ -76,7 +76,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3>Funding Goal by Country</h3>
+                    <div class="title">
+                        <h4>Funding Goal by Country</h4>
+                    </div>
                     <div id="country-goal"></div>
                 </div>
             </div>
@@ -85,7 +87,9 @@
     <section>
         <div class="container">
             <div class="row">
-                <h2>Bubble Chart Placeholder</h2>
+                <div class="title">
+                    <h4>Bubble Chart Placeholder</h4>
+                </div>
                 <div id="pledged_vs_goal_by_country"></div>
                 <div class="col-sm-8">
 

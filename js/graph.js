@@ -38,7 +38,7 @@ function region_selector(ndx) {
     let regionDim = ndx.dimension(dc.pluck("region"));
     let group = regionDim.group();
 
-    dc.selectMenu("#country_filter")
+    dc.selectMenu("#region_selector")
         .dimension(regionDim)
         .group(group);
 }
