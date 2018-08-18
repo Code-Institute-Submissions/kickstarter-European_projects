@@ -17,7 +17,7 @@ function makeGraph(error, transactionsData) {
     status_selector(ndx);
     status_balance(ndx);
     goalfund_country(ndx);
-    bubble_chart(ndx);
+    pledged_vs_goal_by_country(ndx);
 
 
     dc.renderAll();
@@ -46,7 +46,7 @@ function region_selector(ndx) {
 function projectStatusPercentage(ndx, state, element) {
     let percentageStatus = ndx.groupAll().reduce(
         function(p, v) {
-            if (v.region === ("Western Europe" || "Southern Europe" || "Northern Europe")) {
+            if ((v.region === "Western Europe") || (v.region === "Southern Europe") || (v.region ==="Northern Europe")) {
                 p.count++;
                 if (v.status === state) {
 
@@ -56,7 +56,7 @@ function projectStatusPercentage(ndx, state, element) {
             return p;
         },
         function(p, v) {
-            if (v.region === ("Western Europe" || "Southern Europe" || "Northern Europe")) {
+            if ((v.region === "Western Europe") || (v.region === "Southern Europe") || (v.region ==="Northern Europe")) {
                 p.count--;
                 if (v.status === state) {
 
@@ -127,7 +127,7 @@ function goalfund_country(ndx) {
         .xAxis().ticks(6);
 }
 
-function bubble_chart(ndx) {
+function pledged_vs_goal_by_country(ndx) {
     let countryDim = ndx.dimension(function(d){
         return d.country;
     });
@@ -172,8 +172,8 @@ function bubble_chart(ndx) {
         }
     );
     
-    let bubble_chart = dc.bubbleChart("#bubble_chart");
-    bubble_chart.width(990)
+    let pledged_vs_goal_by_country = dc.bubbleChart("#pledged_vs_goal_by_country");
+    pledged_vs_goal_by_country.width(990)
         .height(400)
         .margins({top: 10, right: 50, bottom: 30, left: 60})
         .dimension(countryDim)
@@ -207,10 +207,10 @@ function bubble_chart(ndx) {
                 + "Goal Amount: " + numberFormat(p.value.avg_usd_goal);
                 + "Days Elapsed: " + numberFormat(p.value.avg_days_elapsed);
         });
-    bubble_chart.yAxis().tickFormat(function (s) {
+    pledged_vs_goal_by_country.yAxis().tickFormat(function (s) {
         return s;
     });
-    bubble_chart.xAxis().tickFormat(function (s) {
+    pledged_vs_goal_by_country.xAxis().tickFormat(function (s) {
         return s;
     });
 }
