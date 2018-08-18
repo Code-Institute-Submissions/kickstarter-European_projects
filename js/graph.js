@@ -1,5 +1,7 @@
+let numberFormat = d3.format(".2f");
+
 queue()
-    .defer(d3.csv, "data/ks-projects-Europe_final.csv")
+    .defer(d3.csv, "data/ks-projects-Europe_regional.csv")
     .await(makeGraph);
 
 function makeGraph(error, transactionsData) {
@@ -11,11 +13,11 @@ function makeGraph(error, transactionsData) {
     projectStatusPercentage(ndx, "live", "#percentage-live");
 
     projectCategory(ndx);
-    country_selector(ndx);
+    region_selector(ndx);
     status_selector(ndx);
     status_balance(ndx);
-    fundingTimeCorrelation(ndx);
     goalfund_country(ndx);
+    bubble_chart(ndx);
 
 
     dc.renderAll();
@@ -32,19 +34,19 @@ function status_selector(ndx) {
 
 }
 
-function country_selector(ndx) {
-    let countryDim = ndx.dimension(dc.pluck("country"));
-    let group = countryDim.group();
+function region_selector(ndx) {
+    let regionDim = ndx.dimension(dc.pluck("region"));
+    let group = regionDim.group();
 
     dc.selectMenu("#country_filter")
-        .dimension(countryDim)
+        .dimension(regionDim)
         .group(group);
 }
 
 function projectStatusPercentage(ndx, state, element) {
     let percentageStatus = ndx.groupAll().reduce(
         function(p, v) {
-            if (v.region === "Europe") {
+            if (v.region === ("Western Europe" || "Southern Europe" || "Northern Europe")) {
                 p.count++;
                 if (v.status === state) {
 
@@ -54,7 +56,7 @@ function projectStatusPercentage(ndx, state, element) {
             return p;
         },
         function(p, v) {
-            if (v.region === "Europe") {
+            if (v.region === ("Western Europe" || "Southern Europe" || "Northern Europe")) {
                 p.count--;
                 if (v.status === state) {
 
@@ -111,34 +113,6 @@ function projectCategory(ndx) {
         .group(group);
 }
 
-function fundingTimeCorrelation(ndx) {
-
-    let backersDim = ndx.dimension(dc.pluck("backers"));
-    let pledgedDim = ndx.dimension(function(d) {
-        return [d.backers, d.usd_pledged, ];
-    });
-    let pledgedGroup = pledgedDim.group().reduceSum(dc.pluck("backers"));
-
-    let minBack = backersDim.bottom(1)[0].backers;
-    let maxBack = backersDim.top(1)[0].backers;
-
-    dc.scatterPlot("#fundVTimeCorrel")
-        .width(1000)
-        .height(800)
-        .x(d3.scale.linear().domain([minBack, maxBack]))
-        .brushOn(false)
-        .symbolSize(2)
-        .clipPadding(5)
-        .xAxisLabel("No. of Backers")
-        .title(function(d) {
-            return d.key[2] + " fund " + d.key[1];
-        })
-        
-        .dimension(pledgedDim)
-        .group(pledgedGroup)
-        .margins({ top: 10, right: 50, bottom: 75, left: 75 });
-}
-
 function goalfund_country(ndx) {
     let countryDim = ndx.dimension(dc.pluck('country_code'));
     let group = countryDim.group().reduceSum(dc.pluck('goal'));
@@ -151,4 +125,92 @@ function goalfund_country(ndx) {
         .group(group)
         .elasticX(true)
         .xAxis().ticks(6);
+}
+
+function bubble_chart(ndx) {
+    let countryDim = ndx.dimension(function(d){
+        return d.country;
+    });
+    
+    let statsByCountry = countryDim.group().reduce(
+        function (p, v) {
+            p.count += 1;
+            p.usd_pledged += +v.usd_pledged;
+            p.usd_goal += +v.usd_goal;
+            p.days_elapsed += +v.days_elapsed;
+            
+            p.avg_usd_pledged = p.usd_pledged / p.count;
+            p.avg_usd_goal = p.usd_goal / p.count;
+            p.avg_days_elapsed = p.days_elapsed / p.count;
+            
+            return p;
+        },
+        function (p, v) {
+            p.count -= 1;
+            
+            if (p.count == 0) {
+                p.usd_pledged = 0;
+                p.usd_usd_goal = 0;
+                p.days_elapsed = 0;
+
+                p.avg_usd_pledged = 0;
+                p.avg_usd_goal = 0;
+                p.avg_days_elapsed = 0;
+            } else {
+                p.usd_pledged -= +v.usd_pledged;
+                p.usd_usd_goal -= +v.usd_goal;
+                p.days_elapsed -= +v.days_elapsed;
+
+                p.avg_usd_pledged = p.usd_pledged / p.count;
+                p.avg_usd_goal = p.usd_goal / p.count;
+                p.avg_days_elapsed = p.days_elapsed / p.count;
+            }
+            return p;
+        },
+        function () {
+            return {count: 0, usd_pledged: 0, avg_usd_pledged: 0, usd_goal: 0, avg_usd_goal: 0, days_elapsed: 0, avg_days_elapsed: 0}
+        }
+    );
+    
+    let bubble_chart = dc.bubbleChart("#bubble_chart");
+    bubble_chart.width(990)
+        .height(400)
+        .margins({top: 10, right: 50, bottom: 30, left: 60})
+        .dimension(countryDim)
+        .group(statsByCountry)
+        .colors(d3.scale.category20())
+        .keyAccessor(function (p) {
+            return p.value.avg_usd_pledged;
+        })
+        .valueAccessor(function (p) {
+            return p.value.avg_usd_goal;
+        })
+        .radiusValueAccessor(function (p) {
+            return p.value.avg_usd_pledged;
+        })
+        .x(d3.scale.linear().domain([0, 50000]))
+        .r(d3.scale.linear().domain([0, 50000]))
+        .minRadiusWithLabel(15)
+        .elasticY(true)
+        .yAxisPadding(50000)
+        .elasticX(true)
+        .xAxisPadding(2000)
+        .maxBubbleRelativeSize(0.15)
+        .renderHorizontalGridLines(true)
+        .renderVerticalGridLines(true)
+        .renderLabel(true)
+        .renderTitle(true)
+        .title(function (p) {
+            return p.key
+                + "\n"
+                + "Pledged Amount : " + numberFormat(p.value.avg_usd_pledged) + "\n"
+                + "Goal Amount: " + numberFormat(p.value.avg_usd_goal);
+                + "Days Elapsed: " + numberFormat(p.value.avg_days_elapsed);
+        });
+    bubble_chart.yAxis().tickFormat(function (s) {
+        return s;
+    });
+    bubble_chart.xAxis().tickFormat(function (s) {
+        return s;
+    });
 }

@@ -1,7 +1,7 @@
 let numberFormat = d3.format(".2f");
 
 queue()
-    .defer(d3.csv, "data/ks-projects-Europe_final.csv")
+    .defer(d3.csv, "data/ks-projects-Europe_regional.csv")
     .await(makeGraphs);
     
 function makeGraphs(error, transactionsJson) {
@@ -19,7 +19,7 @@ function makeGraphs(error, transactionsJson) {
             p.days_elapsed += +v.days_elapsed;
             
             p.avg_usd_pledged = p.usd_pledged / p.count;
-            p.avg_goal = p.usd_goal / p.count;
+            p.avg_usd_goal = p.usd_goal / p.count;
             p.avg_days_elapsed = p.days_elapsed / p.count;
             
             return p;
@@ -29,7 +29,7 @@ function makeGraphs(error, transactionsJson) {
             
             if (p.count == 0) {
                 p.usd_pledged = 0;
-                p.usd_goal = 0;
+                p.usd_usd_goal = 0;
                 p.days_elapsed = 0;
 
                 p.avg_usd_pledged = 0;
@@ -37,11 +37,11 @@ function makeGraphs(error, transactionsJson) {
                 p.avg_days_elapsed = 0;
             } else {
                 p.usd_pledged -= +v.usd_pledged;
-                p.usd_goal -= +v.goal;
+                p.usd_goal -= +v.usd_goal;
                 p.days_elapsed -= +v.days_elapsed;
 
                 p.avg_usd_pledged = p.usd_pledged / p.count;
-                p.avg_usd_goal = p.goal / p.count;
+                p.avg_usd_goal = p.usd_goal / p.count;
                 p.avg_days_elapsed = p.days_elapsed / p.count;
             }
             return p;
@@ -62,7 +62,7 @@ function makeGraphs(error, transactionsJson) {
             return p.value.avg_usd_pledged;
         })
         .valueAccessor(function (p) {
-            return p.value.avg_goal;
+            return p.value.avg_usd_goal;
         })
         .radiusValueAccessor(function (p) {
             return p.value.avg_usd_pledged;
