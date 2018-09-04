@@ -23,7 +23,7 @@
 </head>
 
 <body>
-
+    <div class="se-pre-con"></div>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -36,10 +36,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="row title">
+                    <div class="title">
                         <h4>European Projects Success Rate</h4>
                     </div>
-                    <div class="row">
+                    <div class="#">
                         <i class="fas fa-thumbs-up"></i> <span class="number-box" id="percentage-success"></span>
                         <i class="fas fa-thumbs-down"></i> <span class="number-box" id="percentage-fail"></span>
                         <i class="fas fa-ban"></i> <span class="number-box" id="percentage-suspended"></span>
@@ -53,7 +53,10 @@
             </div>
         </div>
     </section>
+
     <hr>
+
+
     <section>
         <div class="container">
             <div class="row">
@@ -72,6 +75,9 @@
             </div>
         </div>
     </section>
+
+
+
     <section>
         <div class="container">
             <div class="row">
@@ -84,6 +90,9 @@
             </div>
         </div>
     </section>
+
+
+
     <section>
         <div class="container">
             <div class="row">
@@ -97,8 +106,11 @@
             </div>
         </div>
     </section>
-
-
+    <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+    <script>
+        $(window).load(function() {
+            $(".se-pre-con").fadeOut("slow"); });
+    </script> 
 </body>
 
 </html>

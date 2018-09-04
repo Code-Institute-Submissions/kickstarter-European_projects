@@ -1,8 +1,36 @@
 .title{
-    background-color: #00447c;
+    background-color: #008080;
     color: #fff;
+    padding: 3px;
+    border-radius: 3px;
 }
 
 .number-box{
     padding: 30px;
+}
+
+/*--------spinner-----------*/
+
+.no-js #loader { 
+    display: none;
+}
+.js #loader { 
+    display: block;
+    position: absolute;
+    left: 100px; top: 0;
+}
+    
+#reset {
+    font-size: 1.5em;
+    margin-top: 15px;
+}
+
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url(../img/spinner.gif) center no-repeat #fff;
 }
