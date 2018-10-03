@@ -1,12 +1,58 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+h2, h3, h4, a, li {
+    font-family: 'Raleway', sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+}
+.navbar {
+    background-image: url("../img/banner-943868_1920.jpg");
+    background-size: cover;
+    color: #ffffff;
+    height: 80px;
+}
+
+.navbar-default .navbar-brand {
+    color: #ffffff;
+}
+
+.navbar-nav li {
+    margin: 5px;
+}
+
+.graph-wrapper {
+    border: 1px solid #dbdbdb;
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 8px 8px 16px -6px rgba(133,130,133,1);
+    margin: 10px;
+}
+
 .title{
-    background-color: #008080;
-    color: #fff;
-    padding: 3px;
-    border-radius: 3px;
+    color: #4796b3;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 10px 25px;
+}
+
+.rate-display{
+    text-align: center;
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+
+.rate-display select {
+    color: #000000;
+    padding: 2px;
+    border-radius: 4px;
+    margin: 0px 25px;
 }
 
 .number-box{
-    padding: 30px;
+    padding-left: 5px;
+    padding-right: 20px;
+    margin: 5px;
 }
 
 /*--------spinner-----------*/
@@ -20,11 +66,6 @@
     left: 100px; top: 0;
 }
     
-#reset {
-    font-size: 1.5em;
-    margin-top: 15px;
-}
-
 .se-pre-con {
 	position: fixed;
 	left: 0px;

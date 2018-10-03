@@ -7,14 +7,14 @@ queue()
 function makeGraph(error, transactionsData) {
     let ndx = crossfilter(transactionsData);
 
-    projectStatusPercentage(ndx, "successful", "#percentage-success");
-    projectStatusPercentage(ndx, "failed", "#percentage-fail");
-    projectStatusPercentage(ndx, "suspended", "#percentage-suspended");
-    projectStatusPercentage(ndx, "live", "#percentage-live");
+    projectStatusPercentage(ndx, "Successful", "#percentage-success");
+    projectStatusPercentage(ndx, "Failed", "#percentage-fail");
+    projectStatusPercentage(ndx, "Suspended", "#percentage-suspended");
+    projectStatusPercentage(ndx, "Live", "#percentage-live");
 
     projectCategory(ndx);
     region_selector(ndx);
-    status_selector(ndx);
+    country_selector(ndx);
     status_balance(ndx);
     goalfund_country(ndx);
     pledged_vs_goal_by_country(ndx);
@@ -22,16 +22,16 @@ function makeGraph(error, transactionsData) {
 
     dc.renderAll();
 
+    $(".se-pre-con").fadeOut("slow");
 }
 
-function status_selector(ndx) {
-    let statusDim = ndx.dimension(dc.pluck("status"));
-    let group = statusDim.group();
+function country_selector(ndx) {
+    let countryDim = ndx.dimension(dc.pluck("country"));
+    let group = countryDim.group();
 
-    dc.selectMenu("#status_filter")
-        .dimension(statusDim)
+    dc.selectMenu("#country_selector")
+        .dimension(countryDim)
         .group(group);
-
 }
 
 function region_selector(ndx) {
@@ -88,16 +88,15 @@ function status_balance(ndx) {
     let group = statusDim.group();
 
     dc.barChart("#status-balance")
-        .width(400)
-        .height(300)
-        .margins({ top: 10, right: 50, bottom: 30, left: 50 })
+        .width(550)
+        .height(350)
+        .margins({ top: 10, right: 50, bottom: 30, left: 75 })
         .dimension(statusDim)
         .group(group)
         .transitionDuration(500)
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .elasticY(true)
-        .xAxisLabel("Status")
         .yAxis().ticks(5);
 }
 
@@ -106,25 +105,26 @@ function projectCategory(ndx) {
     let group = categoryDim.group();
 
     dc.pieChart("#project-category")
-        .height(300)
+        .height(350)
         .radius(150)
-        .innerRadius(35)
+        .width(550)
+        .innerRadius(40)
         .dimension(categoryDim)
-        .group(group);
+        .group(group)
+        .legend(dc.legend().x(50).y(60).itemHeight(10).gap(5));
 }
 
 function goalfund_country(ndx) {
     let countryDim = ndx.dimension(dc.pluck('country_code'));
     let group = countryDim.group().reduceSum(dc.pluck('goal'));
 
-    let chart = dc.rowChart("#country-goal");
-    chart
-        .width(900)
+    dc.rowChart("#country-goal")
+        .width(500)
         .height(500)
         .dimension(countryDim)
         .group(group)
         .elasticX(true)
-        .xAxis().ticks(6);
+        .xAxis().ticks(4);
 }
 
 function pledged_vs_goal_by_country(ndx) {

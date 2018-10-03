@@ -19,98 +19,139 @@
     <script src="js/graph.js"></script>
 
 
-    <title>Kicksterter European Projects</title>
+    <title>Kickstarter European Projects</title>
 </head>
 
 <body>
-    <div class="se-pre-con"></div>
-    <nav class="navbar navbar-default">
+<!--<div class="se-pre-con"></div>-->
+
+<nav class="navbar navbar-default">
         <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Kicstarter Projects in Europe</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+                <a class="navbar-brand" href="#">Kicksterter European Projects</a>
             </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <!--<li id="region_selector">Regional Filter <br></li>-->
+                    <li><a class="btn btn-default " href="javascript:dc.filterAll(); dc.renderAll();"><strong>Reset All</strong></a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container-fluid -->
     </nav>
 
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="title">
-                        <h4>European Projects Success Rate</h4>
-                    </div>
-                    <div class="#">
-                        <i class="fas fa-thumbs-up"></i> <span class="number-box" id="percentage-success"></span>
-                        <i class="fas fa-thumbs-down"></i> <span class="number-box" id="percentage-fail"></span>
-                        <i class="fas fa-ban"></i> <span class="number-box" id="percentage-suspended"></span>
-                        <i class="fas fa-sync-alt"></i> <span class="number-box" id="percentage-live"></span>
-                    </div>
-                </div>
-                <div class="col-sm-3 col-sm-offset-2" id="region_selector">
+<div class="container">
+    
+    <div class="row">
+        <div class="col-sm-6 col-md-3 ">
+            <div class="graph-wrapper">
+                <div class="title rate-display">
                     <h4>Regional Filter</h4>
                 </div>
-                <a class="col-sm-1 btn btn-default rst-btn " href="javascript:dc.filterAll(); dc.renderAll();"><strong>Reset All</strong></a>
+                <div class="clearfix rate-display">
+                <div id="region_selector"></div>
+                </div>
             </div>
         </div>
-    </section>
-
-    <hr>
-
-
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="title">
-                        <h4>Number of Projects by Status</h4>
-                    </div>
-                    <div id="status-balance"></div>
+        <div class="col-sm-6 col-md-3 ">
+            <div class="graph-wrapper rate-display">
+                <div class="title rate-display">
+                    <h4>Country Filter</h4>
                 </div>
-                <div class="col-sm-6">
-                    <div class="title">
-                        <h4>No. of Projects per Category</h4>
-                    </div>
+                <div class="clearfix rate-display">
+                <div id="country_selector"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="graph-wrapper">
+                <div class="title rate-display">
+                    <h4>European Projects Success Rate</h4>
+                </div>
+                <div class="clearfix rate-display">
+                    <a href="#" data-toggle="tooltip" title="Successful"><i class="fas fa-thumbs-up"></i></a>
+                    <span class="number-box" id="percentage-success"></span>
+                    <a href="#" data-toggle="tooltip" data-placement="top" title="Failed"><i class="fas fa-thumbs-down"></i></a>
+                    <span class="number-box" id="percentage-fail"></span>
+                    <a href="#" data-toggle="tooltip" title="Suspended"><i class="fas fa-ban"></i></a>
+                     <span class="number-box" id="percentage-suspended"></span>
+                    <a href="#" data-toggle="tooltip" title="Live"><i class="fas fa-sync-alt"></i></a>
+                     <span class="number-box" id="percentage-live"></span>
+                </div>
+            </div>    
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6 ">
+            <div class="graph-wrapper">
+                <div class="title">
+                    <h4>Number of Projects by Status</h4>
+                </div>
+                <div class="clearfix">
+                <div id="status-balance"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-12 col-md-6 ">
+            <div class="graph-wrapper">
+                <div class="title">
+                    <h4>No. of Projects per Category</h4>
+                </div>
+                <div class="clearfix">
                     <div id="project-category"></div>
-                </div>
+                </div>   
             </div>
         </div>
-    </section>
-
-
-
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="title">
-                        <h4>Funding Goal by Country</h4>
-                    </div>
+    </div>
+<hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="graph-wrapper">
+                <div class="title">
+                    <h4>Funding Goal by Country</h4>
+                </div>
+                <div class="clearfix">
                     <div id="country-goal"></div>
                 </div>
-            </div>
+            </div>   
         </div>
-    </section>
+    </div>
 
-
-
-    <section>
-        <div class="container">
-            <div class="row">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="graph-wrapper">
                 <div class="title">
                     <h4>Bubble Chart Placeholder</h4>
                 </div>
-                <div id="pledged_vs_goal_by_country"></div>
-                <div class="col-sm-8">
-
+                <div class="clearfix">    
+                    <div id="pledged_vs_goal_by_country"></div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</div>
+
     <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script>
-        $(window).load(function() {
-            $(".se-pre-con").fadeOut("slow"); });
-    </script> 
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
 </body>
 
 </html>
