@@ -88,9 +88,9 @@ function status_balance(ndx) {
     let group = statusDim.group();
 
     dc.barChart("#status-balance")
-        .width(550)
+        .width(500)
         .height(350)
-        .margins({ top: 10, right: 50, bottom: 30, left: 75 })
+        .margins({ top: 10, right: 50, bottom: 50, left: 75 })
         .dimension(statusDim)
         .group(group)
         .transitionDuration(500)
@@ -107,11 +107,11 @@ function projectCategory(ndx) {
     dc.pieChart("#project-category")
         .height(350)
         .radius(150)
-        .width(550)
+        .width(500)
         .innerRadius(40)
         .dimension(categoryDim)
         .group(group)
-        .legend(dc.legend().x(50).y(60).itemHeight(10).gap(5));
+        .legend(dc.legend().x(35).y(60).itemHeight(10).gap(5));
 }
 
 function goalfund_country(ndx) {
@@ -119,12 +119,13 @@ function goalfund_country(ndx) {
     let group = countryDim.group().reduceSum(dc.pluck('goal'));
 
     dc.rowChart("#country-goal")
-        .width(500)
+        .width(990)
         .height(500)
+        .margins({top: 10, right: 40, bottom: 40, left: 50})
         .dimension(countryDim)
         .group(group)
         .elasticX(true)
-        .xAxis().ticks(4);
+        .xAxis().ticks(8);
 }
 
 function pledged_vs_goal_by_country(ndx) {
@@ -173,9 +174,10 @@ function pledged_vs_goal_by_country(ndx) {
     );
     
     let pledged_vs_goal_by_country = dc.bubbleChart("#pledged_vs_goal_by_country");
-    pledged_vs_goal_by_country.width(990)
+    pledged_vs_goal_by_country
+        .width(990)
         .height(400)
-        .margins({top: 10, right: 50, bottom: 30, left: 60})
+        .margins({top: 10, right: 40, bottom: 40, left: 50})
         .dimension(countryDim)
         .group(statsByCountry)
         .colors(d3.scale.category20())
@@ -195,6 +197,8 @@ function pledged_vs_goal_by_country(ndx) {
         .yAxisPadding(50000)
         .elasticX(true)
         .xAxisPadding(2000)
+        .xAxisLabel("USD Pledged")
+        .yAxisLabel("USD Goal")
         .maxBubbleRelativeSize(0.15)
         .renderHorizontalGridLines(true)
         .renderVerticalGridLines(true)

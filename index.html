@@ -23,11 +23,10 @@
 </head>
 
 <body>
-<!--<div class="se-pre-con"></div>-->
+<div class="se-pre-con"></div>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -35,122 +34,135 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-                <a class="navbar-brand" href="#">Kicksterter European Projects</a>
+                <a class="navbar-brand" href="#">Kickstarter European Projects</a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <!--<li id="region_selector">Regional Filter <br></li>-->
-                    <li><a class="btn btn-default " href="javascript:dc.filterAll(); dc.renderAll();"><strong>Reset All</strong></a></li>
+                    <li><a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a></li>
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container-fluid -->
     </nav>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"><strong>Attention!</strong></h4>
+                    </div>
+                    <div class="modal-body">
+                        This dashboard is best viewed on tablets or desktop devices in landscape mode.  Please revert to a larger screen should you have any issues viewing this content. We apologise for any inconvenience.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="container">
-    
-    <div class="row">
-        <div class="col-sm-6 col-md-3 ">
-            <div class="graph-wrapper">
-                <div class="title rate-display">
-                    <h4>Regional Filter</h4>
+<section>
+    <aside>
+        <div class="row">
+
+            <div class="filter-display" id="region_selector">
+                <h4>Region Filter</h4>
+            </div>
+
+            <div class="filter-display" id="country_selector">
+                <h4>Country Filter</h4>
+            </div>
+
+        </div>
+    </aside>
+    <article>
+
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="box-wrapper">
+                    <div class="overview">
+                        <h3>Overview</h3>
+                        <p>This dashboard uses a static data taken from <a href="https://www.kaggle.com/" target="blank">kaggle.com</a> and was last updated in January 2018. I allows users to analyse typical Kickstarter project category trends and success rate per country. Various filters may be applied by selecting from any of the graphs or filters.  A 'reset' button is availabe in the top navigation.</p>
+                    </div>
+                    
                 </div>
-                <div class="clearfix rate-display">
-                <div id="region_selector"></div>
+            </div>
+
+            <div class="col-sm-12 col-md-12">
+                <div class="box-wrapper">
+                    <div class="clearfix rate-display">
+                        <h4>European Projects Success Rate</h4>
+                        <a  data-toggle="tooltip"  title="Successful"><i class="fas fa-thumbs-up"></i></a>
+                        <span class="number-box" id="percentage-success"></span>
+                        <a href="#" data-toggle="tooltip" data-placement="top" title="Failed"><i class="fas fa-thumbs-down"></i></a>
+                        <span class="number-box" id="percentage-fail"></span>
+                        <a href="#" data-toggle="tooltip" title="Suspended"><i class="fas fa-ban"></i></a>
+                        <span class="number-box" id="percentage-suspended"></span>
+                        <a href="#" data-toggle="tooltip" title="Live"><i class="fas fa-sync-alt"></i></a>
+                        <span class="number-box" id="percentage-live"></span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-3 ">
-            <div class="graph-wrapper rate-display">
-                <div class="title rate-display">
-                    <h4>Country Filter</h4>
-                </div>
-                <div class="clearfix rate-display">
-                <div id="country_selector"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-6">
-            <div class="graph-wrapper">
-                <div class="title rate-display">
-                    <h4>European Projects Success Rate</h4>
-                </div>
-                <div class="clearfix rate-display">
-                    <a href="#" data-toggle="tooltip" title="Successful"><i class="fas fa-thumbs-up"></i></a>
-                    <span class="number-box" id="percentage-success"></span>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Failed"><i class="fas fa-thumbs-down"></i></a>
-                    <span class="number-box" id="percentage-fail"></span>
-                    <a href="#" data-toggle="tooltip" title="Suspended"><i class="fas fa-ban"></i></a>
-                     <span class="number-box" id="percentage-suspended"></span>
-                    <a href="#" data-toggle="tooltip" title="Live"><i class="fas fa-sync-alt"></i></a>
-                     <span class="number-box" id="percentage-live"></span>
-                </div>
-            </div>    
-        </div>
-    </div>
 
 
-    <div class="row">
-        <div class="col-sm-12 col-md-6 ">
-            <div class="graph-wrapper">
-                <div class="title">
-                    <h4>Number of Projects by Status</h4>
-                </div>
-                <div class="clearfix">
-                <div id="status-balance"></div>
+        <div class="row">
+            <div class="col-sm-6 col-md-6 ">
+                <div class="box-wrapper">
+                    <div class="title">
+                        <h4>Number of Projects by Status</h4>
+                    </div>
+                    <div class="clearfix">
+                        <div id="status-balance"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-sm-12 col-md-6 ">
-            <div class="graph-wrapper">
-                <div class="title">
-                    <h4>No. of Projects per Category</h4>
-                </div>
-                <div class="clearfix">
-                    <div id="project-category"></div>
-                </div>   
-            </div>
-        </div>
-    </div>
-<hr>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="graph-wrapper">
-                <div class="title">
-                    <h4>Funding Goal by Country</h4>
-                </div>
-                <div class="clearfix">
-                    <div id="country-goal"></div>
-                </div>
-            </div>   
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="graph-wrapper">
-                <div class="title">
-                    <h4>Bubble Chart Placeholder</h4>
-                </div>
-                <div class="clearfix">    
-                    <div id="pledged_vs_goal_by_country"></div>
+            <div class="col-sm-6 col-md-6 ">
+                <div class="box-wrapper">
+                    <div class="title">
+                        <h4>Number of Projects per Category</h4>
+                    </div>
+                    <div class="clearfix">
+                        <div id="project-category"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box-wrapper">
+                    <div class="title">
+                        <h4>Funding Goal per Country</h4>
+                    </div>
+                    <div class="clearfix">
+                        <p id="country-goal">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box-wrapper">
+                    <div class="title">
+                        <h4>Amount Pledged vs Goal by Country</h4>
+                    </div>
+                    <div class="clearfix">
+                        <div id="pledged_vs_goal_by_country"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section> 
 
     <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function() {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
+    
+    <script type="text/javascript" src="../js/script.js"></script>
 
 </body>
 
