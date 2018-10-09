@@ -1,6 +1,6 @@
 # Kickstarter European Projects
  
-This dashboard provides information on Kickstarter projects which have been launched between 2012 and January 2018.  If gives some insite into the success/failure rate and areas of interest per country and european region.
+This dashboard provides information on Kickstarter projects which have been launched between 2012 and January 2018.  It gives some insite into the success/failure rate and areas of interest per country and european region.
 
 
 ## Live Link 
