@@ -4,7 +4,7 @@ This dashboard provides information on Kickstarter projects which have been laun
 
 
 ## Live Link 
-The website is available for viewing via GitHub Pages on the following link: [Data Visualisation](https://ringhio79.github.io/frontend-project-2/)
+The website is available for viewing via GitHub Pages on the following link: [Data Visualisation](https://ringhio79.github.io/kickstarter-European_projects/)
  
 ## UX & Features
  
